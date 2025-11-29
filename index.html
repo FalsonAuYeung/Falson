@@ -1,1 +1,207 @@
-nothing
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>极限世界 - Minecraft数据包</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f0f0f0;
+        }
+
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%232c3e50"/><path d="M20,20 L80,20 L80,80 L20,80 Z" fill="none" stroke="%233498db" stroke-width="2"/><circle cx="30" cy="30" r="5" fill="%23e74c3c"/><circle cx="70" cy="30" r="5" fill="%23e74c3c"/><circle cx="30" cy="70" r="5" fill="%23e74c3c"/><circle cx="70" cy="70" r="5" fill="%23e74c3c"/></svg>');
+            background-size: cover;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .version {
+            background: #e74c3c;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 3rem 0;
+        }
+
+        .feature-card {
+            flex: 1 1 300px;
+            background: white;
+            margin: 1rem;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-card ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .feature-card li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .feature-card li:before {
+            content: "▶";
+            color: #3498db;
+            margin-right: 0.5rem;
+        }
+
+        .modules {
+            background: #2c3e50;
+            color: white;
+            padding: 3rem 0;
+        }
+
+        .modules h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .module-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .module-item {
+            background: rgba(255, 255, 255, 0.1);
+            margin: 0.5rem;
+            padding: 1rem 1.5rem;
+            border-radius: 20px;
+        }
+
+        footer {
+            background: #34495e;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .feature-card {
+                flex: 1 1 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>极限世界</h1>
+            <p class="subtitle">一个增强Minecraft生存体验的数据包</p>
+            <div class="version">版本 1.12.03</div>
+        </div>
+    </header>
+
+    <section class="container">
+        <div class="features">
+            <div class="feature-card">
+                <h3>🎮 游戏机制</h3>
+                <ul>
+                    <li>独特的难度系统设计</li>
+                    <li>全方位的生存挑战</li>
+                    <li>动态环境变化</li>
+                    <li>丰富的怪物行为</li>
+                    <li>创新的食物系统</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h3>⚙️ 核心特性</h3>
+                <ul>
+                    <li>护甲耐久消耗机制</li>
+                    <li>高度相关的生存挑战</li>
+                    <li>结构探索风险增加</li>
+                    <li>维度穿越代价</li>
+                    <li>生物群系差异化体验</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h3>🛡️ 生存要素</h3>
+                <ul>
+                    <li>玩家最大生命值限制</li>
+                    <li>怪物破坏方块行为</li>
+                    <li>可食用任意食物系统</li>
+                    <li>钓鱼机制优化</li>
+                    <li>健康恢复机制调整</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="modules">
+        <div class="container">
+            <h2>功能模块</h2>
+            <div class="module-list">
+                <div class="module-item">always_eatable_food</div>
+                <div class="module-item">deprecated_difficulty</div>
+                <div class="module-item">mob_behavior</div>
+                <div class="module-item">player_max_health_limitation</div>
+                <div class="module-item">player_max_health_restore</div>
+                <div class="module-item">mob_invasion_event</div>
+                <div class="module-item">fish_fished</div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 极限世界数据包 | 为Minecraft爱好者打造极致生存体验</p>
+        </div>
+    </footer>
+</body>
+</html>
