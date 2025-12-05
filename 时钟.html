@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时钟</title>
+    <style>
+        #clock{
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            border: 1px solid black;
+            position: relative;
+            margin: 0 auto;
+        }
+        #hour{
+            width: 8px;
+            height: 100px;
+            background-color: black;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            margin-left: -4px;
+            margin-top: -100px;
+        }
+        #minute{
+            width: 6px;
+            height: 140px;
+            background-color: black;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            margin-left: -3px;
+            margin-top: -140px;
+        }
+        /* 刻度样式 */
+        .scale {
+            position: absolute;
+            width: 2px;
+            height: 15px;
+            background-color: black;
+            left: 50%;
+            top: 0;
+            transform-origin: 50% 200px;
+            margin-left: -1px;
+        }
+        
+        /* 数字样式 */
+        .number {
+            position: absolute;
+            font-size: 20px;
+            font-weight: bold;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            /* 防止文字被选中 */
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            cursor: default;
+        }
+        
+        /* 中心点样式 */
+        .center-dot {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #333;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+        
+        /* 控制面板样式 */
+        .control-panel {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .time-input {
+            padding: 5px;
+            font-size: 16px;
+            width: 60px;
+        }
+        
+        .time-label {
+            font-size: 16px;
+            margin: 0 5px;
+        }
+        
+        .set-time-btn {
+            padding: 5px 10px;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="clock">
+        <!-- 动态生成刻度和数字 -->
+        <div id="scales"></div>
+        <div id="numbers"></div>
+        <div id="hour"></div>
+        <div id="minute"></div>
+        <div class="center-dot"></div>
+    </div>
+    
+    <div class="control-panel">
+        <input type="number" class="time-input" id="hourInput" min="0" max="24" placeholder="时">
+        <span class="time-label">时</span>
+        <input type="number" class="time-input" id="minuteInput" min="0" max="60" placeholder="分">
+        <span class="time-label">分</span>
+        <button class="set-time-btn" onclick="setClockTime()">设置时间</button>
+    </div>
+
+    <script>
+        // 创建刻度和数字
+        const clock = document.getElementById('clock');
+        const scalesContainer = document.getElementById('scales');
+        const numbersContainer = document.getElementById('numbers');
+        
+        // 时钟半径
+        const clockRadius = 200;
+        // 数字距离中心的距离
+        const numberDistance = 180;
+        
+        // 创建12个刻度和数字
+        for (let i = 1; i <= 12; i++) {
+            // 创建刻度
+            const scale = document.createElement('div');
+            scale.className = 'scale';
+            scale.style.transform = `rotate(${i * 30}deg)`;
+            scalesContainer.appendChild(scale);
+            
+            // 创建数字
+            const number = document.createElement('div');
+            number.className = 'number';
+            number.textContent = i;
+            
+            // 使用三角函数计算数字的精确位置，避免旋转
+            const angle = (i * 30 - 90) * Math.PI / 180; // 转换为弧度，并从12点位置开始
+            const x = clockRadius + numberDistance * Math.cos(angle) - 15; // 15是数字宽度的一半
+            const y = clockRadius + numberDistance * Math.sin(angle) - 15; // 15是数字高度的一半
+            
+            number.style.left = x + 'px';
+            number.style.top = y + 'px';
+            numbersContainer.appendChild(number);
+        }
+        
+        // 设置时钟指针位置的函数
+        function setClockTime() {
+            const hourInput = document.getElementById('hourInput');
+            const minuteInput = document.getElementById('minuteInput');
+            
+            let hours = parseInt(hourInput.value);
+            let minutes = parseInt(minuteInput.value);
+            
+            // 验证输入值
+            if (isNaN(hours) || hours < 0 || hours > 24) {
+                alert('请输入有效的小时数 (0-24)');
+                return;
+            }
+            
+            if (isNaN(minutes) || minutes < 0 || minutes > 60) {
+                alert('请输入有效的分钟数 (0-60)');
+                return;
+            }
+            
+            // 处理边界情况
+            if (hours === 24) hours = 0;
+            if (minutes === 60) minutes = 0;
+            
+            // 转换为12小时制
+            hours = hours % 12;
+            
+            // 计算角度
+            const hourDeg = (hours * 30) + (minutes * 0.5);
+            const minuteDeg = minutes * 6;
+            
+            // 设置指针角度
+            document.getElementById('hour').style.transform = `rotate(${hourDeg}deg)`;
+            document.getElementById('minute').style.transform = `rotate(${minuteDeg}deg)`;
+        }
+        
+        // 页面加载完成后初始化时钟为当前时间
+        window.onload = function() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('hourInput').value = hours;
+            document.getElementById('minuteInput').value = minutes;
+            setClockTime();
+        };
+    </script>
+</body>
+</html>
