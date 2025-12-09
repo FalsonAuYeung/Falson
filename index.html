@@ -3,12 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>首页</title>
+    <title>小学数学AI项目</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #4a90e2;
+            margin-bottom: 30px;
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        a {
+            display: block;
+            padding: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            font-size: 1.2em;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .arithmetic {
+            background-color: #4a90e2;
+        }
+
+        .clock {
+            background-color: #ff7b38;
+        }
+    </style>
+</head>
 <body>
-    <a href="https://falsonauyeung.github.io/Falson/%E6%97%B6%E9%92%9F.html">时钟</a>
-    <a href="https://falsonauyeung.github.io/Falson/%E5%8F%A3%E7%AE%97%E8%AE%AD%E7%BB%83.html">口算训练</a>
-    <a href="https://falsonauyeung.github.io/Falson/口算_三位数除以整十数.html">三位数除以整十数</a>
+    <div class="container">
+        <h1>小学数学AI项目</h1>
+        <div class="links">
+            <a href="口算_index.html" class="arithmetic">口算练习</a>
+            <a href="时钟.html" class="clock">时钟学习</a>
+        </div>
+    </div>
 </body>
-
 </html>
