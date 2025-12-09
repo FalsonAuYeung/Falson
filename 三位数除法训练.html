@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三位数除以整十数练习</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .question {
+            font-size: 2em;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #e9f7fe;
+            border-radius: 5px;
+        }
+        input {
+            font-size: 1.5em;
+            padding: 10px;
+            width: 150px;
+            text-align: center;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            font-size: 1.2em;
+            margin: 20px 0;
+            min-height: 30px;
+        }
+        .correct {
+            color: green;
+            font-weight: bold;
+        }
+        .incorrect {
+            color: red;
+            font-weight: bold;
+        }
+        #score {
+            font-size: 1.2em;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+        .hint {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>三位数除以整十数练习</h1>
+        <p>请计算下列除法题（只填整数商，不写余数）：</p>
+        
+        <div class="question" id="question">点击开始答题</div>
+        
+        <input type="number" id="answer" placeholder="请输入答案" onkeydown="if(event.key==='Enter') checkAnswer()">
+        
+        <div>
+            <button onclick="generateQuestion()">下一题</button>
+            <button onclick="checkAnswer()">提交答案</button>
+        </div>
+        
+        <div id="result"></div>
+        
+        <div id="score">答对: 0 | 答错: 0</div>
+        <div class="hint">提示：只填写整数商，不需要余数</div>
+    </div>
+
+    <script>
+        let currentAnswer = 0;
+        let dividend = 0;  // 被除数
+        let divisor = 0;   // 除数
+        let correctCount = 0;
+        let wrongCount = 0;
+
+        function generateQuestion() {
+            // 生成整十数除数 (10, 20, 30, ..., 90)
+            const tens = Math.floor(Math.random() * 9) + 1; // 1-9
+            divisor = tens * 10;
+            
+            // 为了确保被除数是三位数且个位数不为0，我们需要特殊处理
+            // 我们先生成一个三位数，然后找到最近的能被除数整除的数
+            let candidate;
+            do {
+                // 生成一个三位数 (100-999)
+                candidate = Math.floor(Math.random() * 900) + 100;
+                
+                // 如果这个数能被整十数整除，则使用它
+                if (candidate % divisor === 0) {
+                    dividend = candidate;
+                    break;
+                }
+                
+                // 否则寻找附近能整除的数
+                const lower = Math.floor(candidate / divisor) * divisor;
+                const upper = lower + divisor;
+                
+                // 确保找到的数仍然是三位数
+                if (lower >= 100 && lower <= 999) {
+                    dividend = lower;
+                } else if (upper >= 100 && upper <= 999) {
+                    dividend = upper;
+                } else {
+                    continue; // 如果都不在范围内，重新生成
+                }
+                break;
+            } while (true);
+            
+            // 计算商（答案）
+            currentAnswer = dividend / divisor;
+            
+            // 显示题目
+            document.getElementById('question').textContent = dividend + " ÷ " + divisor + " = ?";
+            
+            // 清空输入框和结果
+            document.getElementById('answer').value = '';
+            document.getElementById('result').textContent = '';
+            document.getElementById('answer').focus();
+        }
+
+        function checkAnswer() {
+            const userAnswer = parseInt(document.getElementById('answer').value);
+            
+            if (isNaN(userAnswer)) {
+                document.getElementById('result').textContent = '请输入一个有效的数字！';
+                document.getElementById('result').className = 'incorrect';
+                return;
+            }
+            
+            if (userAnswer === currentAnswer) {
+                document.getElementById('result').textContent = '正确！' + dividend + " ÷ " + divisor + " = " + currentAnswer;
+                document.getElementById('result').className = 'correct';
+                correctCount++;
+            } else {
+                document.getElementById('result').textContent = `错误！正确答案是 ${currentAnswer} （${dividend} ÷ ${divisor} = ${currentAnswer} 余 ${dividend % divisor}）`;
+                document.getElementById('result').className = 'incorrect';
+                wrongCount++;
+            }
+            
+            // 更新分数显示
+            document.getElementById('score').textContent = `答对: ${correctCount} | 答错: ${wrongCount}`;
+        }
+
+        // 页面加载完成后初始化第一题
+        window.onload = function() {
+            generateQuestion();
+        };
+    </script>
+</body>
+</html>
