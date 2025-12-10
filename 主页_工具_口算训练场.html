@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>口算练习</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f0f8ff;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #4a90e2;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #3478e6;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .back-link:hover {
+            background-color: #2463d2;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .exercises-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .exercise-column {
+            flex: 1;
+            min-width: 250px;
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .column-title {
+            text-align: center;
+            color: #4a90e2;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #4a90e2;
+        }
+
+        .exercise-link {
+            display: block;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s;
+        }
+
+        .exercise-link:hover {
+            background-color: #e9ecef;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .exercise-link h3 {
+            color: #4a90e2;
+        }
+
+        /* 横向混合练习标签页样式 */
+        .mixed-tabs {
+            display: flex;
+            justify-content: space-around;
+            background-color: #4a90e2;
+            border-radius: 8px;
+            margin: 20px 0;
+            padding: 0;
+        }
+
+        .mixed-tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px 0;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        .mixed-tab:hover {
+            background-color: #3a7bc8;
+        }
+
+        .mixed-dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 250px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 0 0 8px 8px;
+            padding: 10px;
+        }
+
+        .mixed-tab:hover .mixed-dropdown-content {
+            display: block;
+        }
+
+        .mixed-dropdown-content .exercise-link {
+            margin: 5px 0;
+            background-color: #f8f9fa;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            color: #6c757d;
+            clear: both;
+        }
+
+        @media (max-width: 768px) {
+            .exercises-container {
+                flex-direction: column;
+            }
+            
+            .mixed-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="./主页_工具.html" class="back-link">← 返回工具页</a>
+            <h1>口算练习</h1>
+            <p>选择您要练习的口算类型</p>
+        </header>
+
+
+
+        <!-- 横向混合练习标签页 -->
+        <div class="mixed-tabs">
+            <div class="mixed-tab">
+                加法
+                <div class="mixed-dropdown-content">
+                    <a href="口算_加法_一位数加两位数.html" class="exercise-link">
+                        <h3>进位加法练习</h3>
+                        <p>58 + 3</p>
+                    </a>
+                    <a href="口算_加法_两位数加两位数.html" class="exercise-link">
+                        <h3>进位加法练习</h3>
+                        <p>58 + 37</p>
+                    </a>
+                </div>
+            </div>
+            <div class="mixed-tab">
+                减法
+                <div class="mixed-dropdown-content">
+                    <a href="口算_减法_借位_百内.html" class="exercise-link">
+                        <h3>借位减法练习</h3>
+                        <p>92 - 5</p>
+                    </a>
+                </div>
+            </div>
+            <div class="mixed-tab">
+                乘法
+                <div class="mixed-dropdown-content">
+                    <a href="口算_乘法_口诀.html" class="exercise-link">
+                        <h3>乘法口诀</h3>
+                        <p>随机出 1~9 的乘法，支持填空或选择模式</p>
+                    </a>
+                    <a href="口算_乘法_一般.html" class="exercise-link">
+                        <h3>一位数加两位数</h3>
+                        <p>18 × 3</p>
+                    </a>
+                    <a href="口算_乘法_三位数乘以一位数.html" class="exercise-link">
+                        <h3>//三位数乘以一位数</h3>
+                        <p>练习两位数乘以一位数的口算</p>
+                    </a>
+                </div>
+            </div>
+            <div class="mixed-tab">
+                除法
+                <div class="mixed-dropdown-content">
+                    <a href="口算_除法_没有余数_两位数除以一位数.html" class="exercise-link">
+                        <h3>两位数 除以 一位数 <br>没有余数</h3>
+                        <p>12 ÷ 3</p>
+                    </a>
+                    <a href="口算_除法_有余数_三位数除以整十数.html" class="exercise-link">
+                        <h3>三位数除以整十数</h3>
+                        <p>251 ÷ 20</p>
+                    </a>
+                    <a href="口算_除法_有余数_两位数除以一位数.html" class="exercise-link">
+                        <h3>两位数 除以 一位数 <br>有余数</h3>
+                        <p>如 47 ÷ 6 = ? …… ?</p>
+                    </a>
+                </div>
+            </div>
+            <div class="mixed-tab">
+                混合
+                <div class="mixed-dropdown-content">
+                    <a href="口算_混合_加减_整千百.html" class="exercise-link">
+                        <h3>整百整千加减法</h3>
+                        <p>300 + 500、1200 - 400</p>
+                    </a>
+                    <a href="口算_混合_加减乘除.html" class="exercise-link">
+                        <h3>两步混合运算</h3>
+                        <p>25 + 18 - 9 或 6 × 7 + 5</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 小学数学练习系统</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>两步混合运算练习</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        h1 {
+            color: #333;
+        }
+        .question {
+            font-size: 2em;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #e9f7fe;
+            border-radius: 5px;
+        }
+        input {
+            font-size: 1.5em;
+            padding: 10px;
+            width: 150px;
+            text-align: center;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            font-size: 1.2em;
+            margin: 20px 0;
+            min-height: 30px;
+        }
+        .correct {
+            color: green;
+            font-weight: bold;
+        }
+        .incorrect {
+            color: red;
+            font-weight: bold;
+        }
+        #score {
+            font-size: 1.2em;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+        
+        /* Celebration animation */
+        .celebration {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+            display: none;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-10px);
+            }
+            75% {
+                transform: translateX(10px);
+            }
+        }
+        
+        .bounce {
+            animation: bounce 1s ease;
+        }
+        
+        .shake {
+            animation: shake 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <h1>两步混合运算练习</h1>
+        <p>请按运算顺序计算下列题目：</p>
+        
+        <div class="question" id="question">点击开始答题</div>
+        
+        <input type="number" id="answer" placeholder="请输入答案" onkeydown="if(event.key==='Enter') checkAnswer()">
+        
+        <div>
+            <button onclick="generateQuestion()">下一题</button>
+            <button onclick="checkAnswer()">提交答案</button>
+        </div>
+        
+        <div id="result"></div>
+        
+        <div id="score">答对: 0 | 答错: 0</div>
+        
+        <!-- Celebration effect container -->
+        <div class="celebration" id="celebration"></div>
+    </div>
+
+    <script>
+        let currentAnswer = 0;
+        let correctCount = 0;
+        let wrongCount = 0;
+
+        function generateQuestion() {
+            // Randomly select operation type
+            const operationTypes = [
+                "addSub",  // Addition followed by subtraction
+                "mulAdd",  // Multiplication followed by addition
+                "subAdd",  // Subtraction followed by addition
+                "addMul"   // Addition followed by multiplication
+            ];
+            
+            const type = operationTypes[Math.floor(Math.random() * operationTypes.length)];
+            
+            switch(type) {
+                case "addSub":
+                    // Generate addition followed by subtraction (e.g., 25 + 18 - 9)
+                    const add1 = Math.floor(Math.random() * 50) + 10; // 10-59
+                    const add2 = Math.floor(Math.random() * 30) + 10; // 10-39
+                    const sub = Math.floor(Math.random() * 20) + 1;   // 1-20
+                    
+                    // Ensure result is positive
+                    if ((add1 + add2) > sub) {
+                        currentAnswer = (add1 + add2) - sub;
+                        document.getElementById('question').textContent = `${add1} + ${add2} - ${sub} = ?`;
+                    } else {
+                        // Regenerate if result would be negative
+                        generateQuestion();
+                        return;
+                    }
+                    break;
+                    
+                case "mulAdd":
+                    // Generate multiplication followed by addition (e.g., 6 × 7 + 5)
+                    const mul1 = Math.floor(Math.random() * 9) + 1;   // 1-9
+                    const mul2 = Math.floor(Math.random() * 9) + 1;   // 1-9
+                    const add = Math.floor(Math.random() * 20) + 1;   // 1-20
+                    
+                    currentAnswer = (mul1 * mul2) + add;
+                    document.getElementById('question').textContent = `${mul1} × ${mul2} + ${add} = ?`;
+                    break;
+                    
+                case "subAdd":
+                    // Generate subtraction followed by addition
+                    const big = Math.floor(Math.random() * 50) + 20;  // 20-69
+                    const small = Math.floor(Math.random() * 20) + 1; // 1-20
+                    const addAfter = Math.floor(Math.random() * 30) + 1; // 1-30
+                    
+                    // Ensure result is positive
+                    if (big > small) {
+                        currentAnswer = (big - small) + addAfter;
+                        document.getElementById('question').textContent = `${big} - ${small} + ${addAfter} = ?`;
+                    } else {
+                        // Regenerate if result would be negative
+                        generateQuestion();
+                        return;
+                    }
+                    break;
+                    
+                case "addMul":
+                    // Generate addition followed by multiplication
+                    const addFirst1 = Math.floor(Math.random() * 20) + 1; // 1-20
+                    const addFirst2 = Math.floor(Math.random() * 20) + 1; // 1-20
+                    const mulAfter = Math.floor(Math.random() * 6) + 2;   // 2-7
+                    
+                    // Keep numbers reasonable
+                    if ((addFirst1 + addFirst2) <= 20) {
+                        currentAnswer = (addFirst1 + addFirst2) * mulAfter;
+                        document.getElementById('question').textContent = `(${addFirst1} + ${addFirst2}) × ${mulAfter} = ?`;
+                    } else {
+                        // Regenerate if numbers get too large
+                        generateQuestion();
+                        return;
+                    }
+                    break;
+            }
+            
+            // Clear input and result
+            document.getElementById('answer').value = '';
+            document.getElementById('result').textContent = '';
+            document.getElementById('answer').focus();
+        }
+
+        function checkAnswer() {
+            const userAnswer = parseInt(document.getElementById('answer').value);
+            
+            if (isNaN(userAnswer)) {
+                document.getElementById('result').textContent = '请输入一个有效的数字！';
+                document.getElementById('result').className = 'incorrect';
+                showErrorEffect();
+                return;
+            }
+            
+            if (userAnswer === currentAnswer) {
+                document.getElementById('result').textContent = '正确！';
+                document.getElementById('result').className = 'correct';
+                correctCount++;
+                showCelebration();
+            } else {
+                document.getElementById('result').textContent = `错误！正确答案是 ${currentAnswer}`;
+                document.getElementById('result').className = 'incorrect';
+                wrongCount++;
+                showErrorEffect();
+            }
+            
+            // Update score display
+            document.getElementById('score').textContent = `答对: ${correctCount} | 答错: ${wrongCount}`;
+        }
+        
+        function showCelebration() {
+            const container = document.getElementById('container');
+            container.classList.add('bounce');
+            
+            // Create confetti effect
+            const celebration = document.getElementById('celebration');
+            celebration.style.display = 'block';
+            celebration.innerHTML = '';
+            
+            // Create multiple confetti pieces
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.animation = `confetti-fall ${Math.random() * 3 + 2}s linear forwards`;
+                celebration.appendChild(confetti);
+            }
+            
+            // Play sound effect
+            playSuccessSound();
+            
+            // Remove effect after 3 seconds
+            setTimeout(() => {
+                container.classList.remove('bounce');
+                celebration.style.display = 'none';
+            }, 3000);
+        }
+        
+        function showErrorEffect() {
+            const container = document.getElementById('container');
+            container.classList.add('shake');
+            
+            // Play error sound
+            playErrorSound();
+            
+            // Remove effect after 0.5 seconds
+            setTimeout(() => {
+                container.classList.remove('shake');
+            }, 500);
+        }
+
+        function playSuccessSound() {
+            try {
+                // Use Web Audio API to create simple success sound
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.type = 'triangle';
+                oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+                oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
+                oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(0, audioContext.currentTime + 0.3);
+                
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } catch (e) {
+                console.log("无法播放音效:", e);
+            }
+        }
+        
+        function playErrorSound() {
+            try {
+                // Use Web Audio API to create simple error sound
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.type = 'square';
+                oscillator.frequency.setValueAtTime(220, audioContext.currentTime); // A3
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(0, audioContext.currentTime + 0.3);
+                
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } catch (e) {
+                console.log("无法播放音效:", e);
+            }
+        }
+
+        // Initialize first question when page loads
+        window.onload = function() {
+            generateQuestion();
+        };
+    </script>
+    
+    <div style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
+        <a href="主页_工具_口算训练场.html" style="display: inline-block; padding: 10px 20px; background-color: #4a90e2; color: white; text-decoration: none; border-radius: 5px;">返回口算首页</a>
+    </div>
+</body>
+</html>
